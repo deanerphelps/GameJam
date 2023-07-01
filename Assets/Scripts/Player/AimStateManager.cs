@@ -18,7 +18,6 @@ public class AimStateManager : MonoBehaviour
     {
         xAxis.Update(Time.deltaTime);
         yAxis.Update(Time.deltaTime);
-
     }
 
     private void LateUpdate()
