@@ -16,13 +16,16 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(enemyHealth.Health <= 0)
+        if (!PauseMenuScript.isPaused)
         {
-            Destroy(enemy);
+            if (enemyHealth.Health <= 0)
+            {
+                Destroy(enemy);
+            }
         }
     }
 
-    private void EnemyTakeDmg(int dmg)
+    public void EnemyTakeDmg(int dmg)
     {
         enemyHealth.DmgUnit(dmg);
         Debug.Log(enemyHealth.Health);
@@ -32,10 +35,5 @@ public class EnemyManager : MonoBehaviour
     {
         enemyHealth.HealUnit(heal);
         Debug.Log(enemyHealth.Health);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        EnemyTakeDmg(10);
     }
 }

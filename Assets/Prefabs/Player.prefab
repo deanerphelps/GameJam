@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 303909089198440698}
   - component: {fileID: 3709481083179883769}
   - component: {fileID: 3212489716699479157}
-  - component: {fileID: 8355083744192229514}
+  - component: {fileID: 6040201421764648419}
+  - component: {fileID: 3517648995188484312}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   - {fileID: 6069580166703299765}
   - {fileID: 2145942998326798755}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &303909089198440698
 MonoBehaviour:
@@ -99,11 +100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc06cc4b826cbb49b870766bfa8cd4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  walkSpeed: 10
+  sprintSpeed: 20
   jumpHeight: 2.5
   dir: {x: 0, y: 0, z: 0}
   jumpUp: {x: 0, y: 0, z: 0}
-  controller: {fileID: 8355083744192229514}
+  controller: {fileID: 0}
   groundYOffset: 0
   groundMask:
     serializedVersion: 2
@@ -121,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3506fd6db990b1f47bbf59876df882dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!143 &8355083744192229514
+--- !u!143 &6040201421764648419
 CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,13 +142,36 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 3.7
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.0001
+  m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.9, z: 0}
+--- !u!136 &3517648995188484312
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739939923726352153}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0573714
+  m_Height: 3.7401962
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.8799019, z: -0.13084674}
 --- !u!1 &2333601138805277762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1260,7 +1285,11 @@ PrefabInstance:
       value: LizardWizardV2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -8700617353114198275, guid: 96cd0a15b42a5544aa39e020f7f45859, type: 3}
+    - {fileID: 65702495048144492, guid: 96cd0a15b42a5544aa39e020f7f45859, type: 3}
+    - {fileID: 8821623529969584324, guid: 96cd0a15b42a5544aa39e020f7f45859, type: 3}
+    - {fileID: -4714817154256824709, guid: 96cd0a15b42a5544aa39e020f7f45859, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96cd0a15b42a5544aa39e020f7f45859, type: 3}
