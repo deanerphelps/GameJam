@@ -19,13 +19,10 @@ public class MovementManager : MonoBehaviour
 
     [SerializeField] float gravity = -9.81f;
     Vector3 velocity;
-    // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         GetDirectionAndMove();
