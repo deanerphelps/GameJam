@@ -12,6 +12,8 @@ public class AimStateManager : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        xAxis.m_InputAxisName = "Mouse X";
+        yAxis.m_InputAxisName = "Mouse Y";
     }
 
     // Update is called once per frame
