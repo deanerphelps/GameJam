@@ -6,9 +6,11 @@ using UnityEngine;
 public class MovementManager : MonoBehaviour
 {
 
-    public float moveSpeed = 3;
-    [HideInInspector] public Vector3 dir;
+    public float moveSpeed = 5;
+    public float jumpHeight = 2.5f;
+    [HideInInspector] public Vector3 dir, jumpUp;
     float horizontalInput, verticalInput;
+    bool jumpInput;
     public CharacterController controller;
 
     [SerializeField] float groundYOffset;
@@ -28,6 +30,7 @@ public class MovementManager : MonoBehaviour
     {
         GetDirectionAndMove();
         Gravity();
+        Jump();
     }
 
     void GetDirectionAndMove()
@@ -38,20 +41,19 @@ public class MovementManager : MonoBehaviour
         dir = transform.forward * verticalInput + transform.right * horizontalInput;
 
         controller.Move(dir.normalized * moveSpeed * Time.deltaTime);
-
     }
 
     bool IsGrounded()
     {
         spherePosition = new Vector3(transform.position.x, transform.position.y - groundYOffset, transform.position.z);
-        if(Physics.CheckSphere(spherePosition, controller.radius - 0.05f, groundMask)) return true;
+        if (Physics.CheckSphere(spherePosition, controller.radius - 0.05f, groundMask)) return true;
         return false;
     }
 
     void Gravity()
     {
-        if(!IsGrounded()) velocity.y += gravity * Time.deltaTime;
-        else if(velocity.y < 0 ) velocity.y = -2;
+        if (!IsGrounded()) velocity.y += gravity * Time.deltaTime;
+        else if (velocity.y < 0) velocity.y = -2;
 
         controller.Move(velocity * Time.deltaTime);
     }
@@ -60,5 +62,15 @@ public class MovementManager : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(spherePosition, controller.radius - 0.05f);
+    }
+
+    void Jump()
+    {
+        if(Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            velocity.y += Mathf.Sqrt(jumpHeight * -3f * gravity);
+        }
+
+        controller.Move(velocity * Time.deltaTime);
     }
 }
