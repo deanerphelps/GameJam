@@ -6,7 +6,9 @@ using UnityEngine;
 public class MovementManager : MonoBehaviour
 {
 
-    public float moveSpeed = 5;
+    public float walkSpeed = 10;
+    public float sprintSpeed = 20;
+    private float moveSpeed;
     public float jumpHeight = 2.5f;
     [HideInInspector] public Vector3 dir, jumpUp;
     float horizontalInput, verticalInput;
@@ -36,6 +38,15 @@ public class MovementManager : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
 
         dir = transform.forward * verticalInput + transform.right * horizontalInput;
+
+        if(Input.GetButton("Sprint"))
+        {
+            moveSpeed = sprintSpeed;
+        }
+        else
+        {
+            moveSpeed = walkSpeed;
+        }
 
         controller.Move(dir.normalized * moveSpeed * Time.deltaTime);
     }
