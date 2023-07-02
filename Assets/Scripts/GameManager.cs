@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
 
     public void SetPlayerMaxHealth()
     {
-        healthBar.maxValue = playerHealth.MaxHealth;
-        healthBar.value = playerHealth.Health;
+        //healthBar.maxValue = playerHealth.MaxHealth;
+        //healthBar.value = playerHealth.Health;
     }
 
     public void SetPlayerHealth()
