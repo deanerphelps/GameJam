@@ -17,7 +17,9 @@ namespace GJ
         public GameObject normalCamera;
 
         [Header("Stats")]
-        [SerializeField] float walkSpeed = 5;
+        [SerializeField] float walkSpeed = 10;
+        [SerializeField] float rollSpeed = 15;
+        [SerializeField] float runSpeed = 20;
         [SerializeField] float rotationSpeed = 10;
         void Start()
         {
@@ -32,25 +34,9 @@ namespace GJ
         public void Update()
         {
             float delta = Time.deltaTime;
-
             inputHandler.TickInput(delta);
-
-            moveDir = cameraObject.forward * inputHandler.vertical;
-            moveDir += cameraObject.right * inputHandler.horizontal;
-            moveDir.Normalize();
-            moveDir.y = 0;
-
-            float speed = walkSpeed;
-            moveDir *= speed;
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDir, normalVector);
-            rigidbody.velocity = projectedVelocity;
-
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
-            
-            if (animatorHandler.canRotate)
-            {
-                HandleRotation(delta);
-            }
+            HandleMovement(delta);
+            HandleRollingAndSprinting(delta);
         }
 
         #region Movement
@@ -77,6 +63,61 @@ namespace GJ
             Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * deltaTime);
 
             myTransform.rotation = targetRotation;
+        }
+
+        public void HandleMovement(float deltaTime)
+        {
+            
+
+            moveDir = cameraObject.forward * inputHandler.vertical;
+            moveDir += cameraObject.right * inputHandler.horizontal;
+            moveDir.Normalize();
+            moveDir.y = 0;
+
+            float speed = walkSpeed;
+            moveDir *= speed;
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDir, normalVector);
+            if(!inputHandler.rollFlag)
+                rigidbody.velocity = projectedVelocity;
+
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+
+            if (animatorHandler.canRotate)
+            {
+                HandleRotation(deltaTime);
+            }
+        }
+
+        public void HandleRollingAndSprinting(float deltaTime)
+        {
+            if (animatorHandler.anim.GetBool("isInteracting"))
+                return;
+
+            if(inputHandler.rollFlag)
+            {
+                moveDir = cameraObject.forward * inputHandler.vertical;
+                moveDir += cameraObject.right * inputHandler.horizontal;
+                moveDir.Normalize();
+                moveDir.y = 0;
+
+                if (inputHandler.moveAmount > 0)
+                {
+                    animatorHandler.PlayTargetAnimation("rollFwd", true);
+                    Quaternion rollRotation = Quaternion.LookRotation(moveDir);
+                    myTransform.rotation = rollRotation;
+
+                    float speed = rollSpeed;
+                    moveDir *= speed;
+                    Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDir, normalVector);
+                    rigidbody.velocity = projectedVelocity;
+
+                }
+
+                else
+                {
+                    //animatorHandler.PlayTargetAnimation("backstep", true);
+                }
+            }
         }
         #endregion
     }

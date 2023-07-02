@@ -16638,6 +16638,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2419595462185711525, guid: 29682da79e2825b49adec9b3bf20fc52, type: 3}
+      propertyPath: walkSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3698732983623884028, guid: 29682da79e2825b49adec9b3bf20fc52, type: 3}
       propertyPath: m_RootOrder
       value: 7

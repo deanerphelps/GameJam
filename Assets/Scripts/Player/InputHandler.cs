@@ -8,6 +8,9 @@ namespace GJ
     {
         public float horizontal, vertical, moveAmount, mouseX, mouseY;
 
+        public bool b_Input, rollFlag, isInteracting;
+
+
         PlayerControls inputActions;
         CameraHandler cameraHandler;
 
@@ -48,6 +51,7 @@ namespace GJ
         public void TickInput(float deltaTime)
         {
             MoveInput(deltaTime);
+            HandleRollInput(deltaTime);
         }
         public void MoveInput(float deltaTime)
         {
@@ -56,6 +60,16 @@ namespace GJ
             moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
+        }
+
+        public void HandleRollInput(float deltaTime)
+        {
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+
+            if (b_Input)
+                rollFlag = true;
+            else
+                rollFlag = false;
         }
     }
 }

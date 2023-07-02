@@ -92,33 +92,33 @@ namespace GJ
 
         }
 
-        [Range(1f, 100f)] public float range;
+        //[Range(1f, 100f)] public float range;
 
-        private void OnDrawGizmos()
-        {
-            targetPosition = defaultPosition;
-            Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
-            direction.Normalize();
+        //private void OnDrawGizmos()
+        //{
+        //    targetPosition = defaultPosition;
+        //    Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
+        //    direction.Normalize();
 
-            //Debug.Log(direction);
-            Debug.Log(targetPosition);
-            Gizmos.DrawWireSphere(cameraPivotTransform.position, targetPosition);
+        //    //Debug.Log(direction);
+        //    Debug.Log(targetPosition);
+        //    Gizmos.DrawWireSphere(cameraPivotTransform.position, targetPosition);
 
-            if (Physics.SphereCast(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition)))
-            {
-                Gizmos.color = Color.green;
-                Vector3 sphereCastMidpoint = cameraTransform.position + (cameraTransform.forward * hit.distance);
-                Gizmos.DrawWireSphere(sphereCastMidpoint, cameraSphereRadius);
-                Gizmos.DrawSphere(hit.point, 0.1f);
-                Debug.DrawLine(cameraTransform.position, sphereCastMidpoint, Color.green);
-            }
-            else
-            {
-                Gizmos.color = Color.red;
-                Vector3 sphereCastMidpoint = cameraTransform.position + (cameraTransform.forward * (range - cameraSphereRadius));
-                Gizmos.DrawWireSphere(sphereCastMidpoint, cameraSphereRadius);
-                Debug.DrawLine(cameraTransform.position, sphereCastMidpoint, Color.red);
-            }
-        }
+        //    if (Physics.SphereCast(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition)))
+        //    {
+        //        Gizmos.color = Color.green;
+        //        Vector3 sphereCastMidpoint = cameraTransform.position + (cameraTransform.forward * hit.distance);
+        //        Gizmos.DrawWireSphere(sphereCastMidpoint, cameraSphereRadius);
+        //        Gizmos.DrawSphere(hit.point, 0.1f);
+        //        Debug.DrawLine(cameraTransform.position, sphereCastMidpoint, Color.green);
+        //    }
+        //    else
+        //    {
+        //        Gizmos.color = Color.red;
+        //        Vector3 sphereCastMidpoint = cameraTransform.position + (cameraTransform.forward * (range - cameraSphereRadius));
+        //        Gizmos.DrawWireSphere(sphereCastMidpoint, cameraSphereRadius);
+        //        Debug.DrawLine(cameraTransform.position, sphereCastMidpoint, Color.red);
+        //    }
+        //}
     }
 }
