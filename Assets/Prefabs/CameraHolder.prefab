@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8940158140353625859}
-  - component: {fileID: 83902269354486760}
+  - component: {fileID: 5895219315532574608}
   m_Layer: 0
   m_Name: CameraHolder
   m_TagString: Untagged
@@ -63,9 +63,9 @@ Transform:
   m_Children:
   - {fileID: 5676106727781312796}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &83902269354486760
+--- !u!114 &5895219315532574608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
