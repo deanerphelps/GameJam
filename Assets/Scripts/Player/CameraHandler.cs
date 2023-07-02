@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 namespace GJ
 {
@@ -13,6 +14,8 @@ namespace GJ
         private Vector3 cameraTransformPosition;
         private Vector3 cameraFollowVelocity = Vector3.zero;
         private LayerMask ignoreLayers;
+
+        private RaycastHit hit;
 
         public static CameraHandler singleton;
 
@@ -67,9 +70,55 @@ namespace GJ
 
         private void HandleCameraCollisions(float delta)
         {
+            targetPosition = defaultPosition;
             RaycastHit hit;
+            
+            Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
+            direction.Normalize();
 
+            if(Physics.SphereCast(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition), ignoreLayers))
+            {
+               float dis = Vector3.Distance(cameraPivotTransform.position, hit.point);
+               targetPosition = -(dis - cameraCollisionOffset);
+            }
 
+            if(Mathf.Abs(targetPosition) < minimumCollisionOffset)
+            {
+                targetPosition = minimumCollisionOffset;
+            }
+
+            cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, delta / 0.2f);
+            cameraTransform.localPosition = cameraTransformPosition;
+
+        }
+
+        [Range(1f, 100f)] public float range;
+
+        private void OnDrawGizmos()
+        {
+            targetPosition = defaultPosition;
+            Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
+            direction.Normalize();
+
+            //Debug.Log(direction);
+            Debug.Log(targetPosition);
+            Gizmos.DrawWireSphere(cameraPivotTransform.position, targetPosition);
+
+            if (Physics.SphereCast(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition)))
+            {
+                Gizmos.color = Color.green;
+                Vector3 sphereCastMidpoint = cameraTransform.position + (cameraTransform.forward * hit.distance);
+                Gizmos.DrawWireSphere(sphereCastMidpoint, cameraSphereRadius);
+                Gizmos.DrawSphere(hit.point, 0.1f);
+                Debug.DrawLine(cameraTransform.position, sphereCastMidpoint, Color.green);
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+                Vector3 sphereCastMidpoint = cameraTransform.position + (cameraTransform.forward * (range - cameraSphereRadius));
+                Gizmos.DrawWireSphere(sphereCastMidpoint, cameraSphereRadius);
+                Debug.DrawLine(cameraTransform.position, sphereCastMidpoint, Color.red);
+            }
         }
     }
 }
