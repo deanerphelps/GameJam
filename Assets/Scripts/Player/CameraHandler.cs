@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace GJ
@@ -10,6 +11,7 @@ namespace GJ
         private Transform myTransform;
 
         private Vector3 cameraTransformPosition;
+        private Vector3 cameraFollowVelocity = Vector3.zero;
         private LayerMask ignoreLayers;
 
         public static CameraHandler singleton;
@@ -17,12 +19,16 @@ namespace GJ
         public float lookSpeed = 0.1f;
         public float followSpeed = 0.1f;
         public float pivotSpeed = 0.03f;
+        public float rotationSpeed = 1;
 
-        private float defaultPosition, lookAngle, pivotAngle;
+        private float targetPosition, defaultPosition, lookAngle, pivotAngle;
 
         public float minimumPivot = -35;
         public float maximumPivot = 35;
 
+        public float cameraSphereRadius = 0.2f;
+        public float cameraCollisionOffset = 0.2f;
+        public float minimumCollisionOffset = 0.2f;
 
         private void Awake()
         {
@@ -34,8 +40,10 @@ namespace GJ
 
         public void FollowTarget(float delta)
         {
-            Vector3 targetPosition = Vector3.Lerp(myTransform.position, targetTransform.position, delta / followSpeed);
+            Vector3 targetPosition = Vector3.SmoothDamp(myTransform.position, targetTransform.position, ref cameraFollowVelocity, delta / followSpeed);
             myTransform.position = targetPosition;
+
+            HandleCameraCollisions(delta);
         }
 
         public void HandleCameraRotation(float delta, float mouseXInput, float mouseYInput)
@@ -46,14 +54,22 @@ namespace GJ
 
             Vector3 rotation = Vector3.zero;
             rotation.y = lookAngle;
-            Quaternion targetRotation = Quaternion.Euler(rotation);
+
+            Quaternion targetRotation = Quaternion.Lerp(myTransform.rotation, Quaternion.Euler(rotation), rotationSpeed * Time.deltaTime);
             myTransform.rotation = targetRotation;
 
             rotation = Vector3.zero;
             rotation.x = pivotAngle;
 
-            targetRotation = Quaternion.Euler(rotation);
+            targetRotation = Quaternion.Lerp(cameraPivotTransform.localRotation, Quaternion.Euler(rotation), rotationSpeed * Time.deltaTime);
             cameraPivotTransform.localRotation = targetRotation;
+        }
+
+        private void HandleCameraCollisions(float delta)
+        {
+            RaycastHit hit;
+
+
         }
     }
 }
