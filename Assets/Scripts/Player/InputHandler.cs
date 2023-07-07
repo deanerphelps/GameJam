@@ -8,29 +8,12 @@ namespace GJ
     {
         public float horizontal, vertical, moveAmount, mouseX, mouseY, rollInputTimer;
 
-        public bool b_Input, rollFlag, sprintFlag, isInteracting;
-
+        public bool b_Input, rollFlag, sprintFlag;
 
         PlayerControls inputActions;
-        CameraHandler cameraHandler;
-
+        
         Vector2 movementInput, cameraInput;
 
-        private void Awake()
-        {
-            cameraHandler = CameraHandler.singleton;
-        }
-
-        private void FixedUpdate()
-        {
-            float delta = Time.fixedDeltaTime;
-
-            if(cameraHandler != null)
-            {
-                cameraHandler.FollowTarget(delta);
-                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-            }
-        }
         public void OnEnable()
         {
             if (inputActions == null)
@@ -73,7 +56,6 @@ namespace GJ
             }
             else
             {
-                Debug.Log(rollInputTimer);
                 if(rollInputTimer > 0 && rollInputTimer < 0.5f)
                 {
                     sprintFlag = false;
@@ -81,9 +63,7 @@ namespace GJ
                 }
 
                 rollInputTimer = 0;
-            }
-
-            
+            }           
         }
     }
 }

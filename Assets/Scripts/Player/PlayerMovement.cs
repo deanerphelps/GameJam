@@ -6,6 +6,7 @@ namespace GJ
 {
     public class PlayerMovement : MonoBehaviour
     {
+        PlayerManager playerManager;
         Transform cameraObject;
         InputHandler inputHandler;
         Vector3 moveDir;
@@ -16,31 +17,21 @@ namespace GJ
         public new Rigidbody rigidbody;
         public GameObject normalCamera;
 
-        [Header("Stats")]
+        [Header("Movement Stats")]
         [SerializeField] float walkSpeed = 10;
         [SerializeField] float rollSpeed = 15;
         [SerializeField] float runSpeed = 20;
         [SerializeField] float rotationSpeed = 10;
 
-        public bool isSprinting;
         void Start()
         {
+            playerManager = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
             cameraObject = Camera.main.transform;
             myTransform = transform;
             animatorHandler.Initialize();
-        }
-
-        public void Update()
-        {
-            float delta = Time.deltaTime;
-
-            isSprinting = inputHandler.b_Input;
-            inputHandler.TickInput(delta);
-            HandleMovement(delta);
-            HandleRollingAndSprinting(delta);
         }
 
         #region Movement
@@ -84,7 +75,7 @@ namespace GJ
             if (inputHandler.sprintFlag)
             {
                 speed = runSpeed;
-                isSprinting = true;
+                playerManager.isSprinting = true;
                 moveDir *= speed;
             }
             else
@@ -97,7 +88,7 @@ namespace GJ
             if(!inputHandler.rollFlag)
                 rigidbody.velocity = projectedVelocity;
 
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
 
             if (animatorHandler.canRotate)
             {

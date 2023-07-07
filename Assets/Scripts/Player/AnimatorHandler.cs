@@ -6,14 +6,18 @@ namespace GJ
 {
     public class AnimatorHandler : MonoBehaviour
     {
+        PlayerManager playerManager;
+        PlayerMovement playerMovement;
         public Animator anim;
-        public InputHandler inputHandler;
+        InputHandler inputHandler;
         int vertical;
         int horizontal;
         public bool canRotate;
 
         public void Initialize()
         {
+            playerManager = GetComponentInParent<PlayerManager>();
+            playerMovement = GetComponentInParent<PlayerMovement>();
             anim = GetComponent<Animator>();
             inputHandler = GetComponentInParent<InputHandler>();
             vertical = Animator.StringToHash("Vertical");
@@ -77,6 +81,19 @@ namespace GJ
         public void StopRotation()
         {
             canRotate = false;
+        }
+
+        private void OnAnimatorMove()
+        {
+            if (playerManager.isInteracting == false)
+                return;
+
+            float delta = Time.deltaTime;
+            playerMovement.rigidbody.drag = 0;
+            Vector3 deltaPosition = anim.deltaPosition;
+            deltaPosition.y = 0;
+            Vector3 velocity = deltaPosition / delta;
+            //playerMovement.rigidbody.velocity = velocity;
         }
     }
 }
