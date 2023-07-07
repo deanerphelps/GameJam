@@ -21,6 +21,8 @@ namespace GJ
         [SerializeField] float rollSpeed = 15;
         [SerializeField] float runSpeed = 20;
         [SerializeField] float rotationSpeed = 10;
+
+        public bool isSprinting;
         void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -34,6 +36,8 @@ namespace GJ
         public void Update()
         {
             float delta = Time.deltaTime;
+
+            isSprinting = inputHandler.b_Input;
             inputHandler.TickInput(delta);
             HandleMovement(delta);
             HandleRollingAndSprinting(delta);
@@ -67,7 +71,8 @@ namespace GJ
 
         public void HandleMovement(float deltaTime)
         {
-            
+            if (inputHandler.rollFlag)
+                return;
 
             moveDir = cameraObject.forward * inputHandler.vertical;
             moveDir += cameraObject.right * inputHandler.horizontal;
@@ -75,12 +80,24 @@ namespace GJ
             moveDir.y = 0;
 
             float speed = walkSpeed;
-            moveDir *= speed;
+
+            if (inputHandler.sprintFlag)
+            {
+                speed = runSpeed;
+                isSprinting = true;
+                moveDir *= speed;
+            }
+            else
+            {
+                speed = walkSpeed;
+                moveDir *= speed;
+            }
+
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDir, normalVector);
             if(!inputHandler.rollFlag)
                 rigidbody.velocity = projectedVelocity;
 
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
 
             if (animatorHandler.canRotate)
             {
@@ -91,9 +108,13 @@ namespace GJ
         public void HandleRollingAndSprinting(float deltaTime)
         {
             if (animatorHandler.anim.GetBool("isInteracting"))
-                return;
+            {
+               animatorHandler.StopRotation(); 
+               return;
+            }
+                
 
-            if(inputHandler.rollFlag)
+            if (inputHandler.rollFlag)
             {
                 moveDir = cameraObject.forward * inputHandler.vertical;
                 moveDir += cameraObject.right * inputHandler.horizontal;
@@ -118,6 +139,8 @@ namespace GJ
                     //animatorHandler.PlayTargetAnimation("backstep", true);
                 }
             }
+
+            animatorHandler.CanRotate();
         }
         #endregion
     }

@@ -15,8 +15,6 @@ namespace GJ
         private Vector3 cameraFollowVelocity = Vector3.zero;
         private LayerMask ignoreLayers;
 
-        private RaycastHit hit;
-
         public static CameraHandler singleton;
 
         public float lookSpeed = 0.1f;

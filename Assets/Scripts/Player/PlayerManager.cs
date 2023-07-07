@@ -11,12 +11,14 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         inputHandler = GetComponent<InputHandler>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
         inputHandler.isInteracting = animator.GetBool("isInteracting");
+        inputHandler.rollFlag = false;
+        inputHandler.sprintFlag = false;
     }
 
     private void PlayerTakeDmg(int dmg)

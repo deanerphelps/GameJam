@@ -6,9 +6,9 @@ namespace GJ
 {
     public class InputHandler : MonoBehaviour
     {
-        public float horizontal, vertical, moveAmount, mouseX, mouseY;
+        public float horizontal, vertical, moveAmount, mouseX, mouseY, rollInputTimer;
 
-        public bool b_Input, rollFlag, isInteracting;
+        public bool b_Input, rollFlag, sprintFlag, isInteracting;
 
 
         PlayerControls inputActions;
@@ -66,10 +66,24 @@ namespace GJ
         {
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
 
-            if (b_Input)
-                rollFlag = true;
+            if(b_Input)
+            {
+                rollInputTimer += deltaTime;
+                sprintFlag = true;
+            }
             else
-                rollFlag = false;
+            {
+                Debug.Log(rollInputTimer);
+                if(rollInputTimer > 0 && rollInputTimer < 0.5f)
+                {
+                    sprintFlag = false;
+                    rollFlag = true;
+                }
+
+                rollInputTimer = 0;
+            }
+
+            
         }
     }
 }
