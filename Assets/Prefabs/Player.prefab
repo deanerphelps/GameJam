@@ -248,7 +248,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.76
-  m_Height: 4.388996
+  m_Height: 3.6
   m_Direction: 1
   m_Center: {x: 0, y: 2.2110167, z: 0}
 --- !u!54 &6942379599614802154
@@ -261,8 +261,8 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_AngularDrag: 0.01
+  m_CenterOfMass: {x: 0, y: 1, z: -1}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -271,7 +271,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -295,6 +295,8 @@ MonoBehaviour:
   rigidbody: {fileID: 6942379599614802154}
   normalCamera: {fileID: 0}
   walkSpeed: 5
+  rollSpeed: 15
+  runSpeed: 20
   rotationSpeed: 10
 --- !u!114 &1661456422427203772
 MonoBehaviour:
@@ -313,6 +315,10 @@ MonoBehaviour:
   moveAmount: 0
   mouseX: 0
   mouseY: 0
+  rollInputTimer: 0
+  b_Input: 0
+  rollFlag: 0
+  sprintFlag: 0
 --- !u!1 &1476753889611449444
 GameObject:
   m_ObjectHideFlags: 0
